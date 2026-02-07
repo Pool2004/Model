@@ -51,7 +51,7 @@ def test_predict_survival_child():
         "sexo": "M"
     }
     response = client.post("/predict", json=body)
-    assert response.status_code == 400
+    assert response.status_code == 200
     assert "nivel de salades" in response.json()
     print(f"Predicción: {response.json()}") 
 
