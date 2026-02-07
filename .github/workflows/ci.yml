@@ -1,36 +1,36 @@
-name: CI
+name: CI # Nombre del workflow
 
-on:
-  push:
+on: # Eventos que disparan el workflow
+  push: # Se ejecuta cuando se hace un push a las ramas main o develop
     branches: [ main, develop ]
-  pull_request:
+  pull_request: # Se ejecuta cuando se crea un pull request hacia las ramas main o develop
     branches: [ main, develop ]
 
-jobs:
-  test:
-    runs-on: ubuntu-latest
+jobs: # Definición de los trabajos a ejecutar
+  test: # Nombre del trabajo
+    runs-on: ubuntu-latest # El trabajo se ejecutará en un entorno Ubuntu (VM proporcionada por GitHub)
     
-    strategy:
+    strategy: # Estrategia de ejecución para probar con diferentes versiones de Python
       matrix:
-        python-version: ['3.9', '3.10', '3.11']
+        python-version: ['3.9', '3.10', '3.11'] # Las versiones de Python que se probarán
     
-    steps:
-    - uses: actions/checkout@v3
+    steps: # Pasos a ejecutar en el trabajo
+    - uses: actions/checkout@v3 
     
-    - name: Set up Python ${{ matrix.python-version }}
+    - name: Set up Python ${{ matrix.python-version }} # Configura la versión de Python según la matriz definida
       uses: actions/setup-python@v4
-      with:
-        python-version: ${{ matrix.python-version }}
+      with: 
+        python-version: ${{ matrix.python-version }} 
     
-    - name: Install dependencies
+    - name: Install dependencies # Instala las dependencias necesarias para el proyecto
       run: |
         python -m pip install --upgrade pip
         pip install -r requirements.txt
     
-    - name: Run tests with pytest
+    - name: Run tests with pytest # Ejecuta las pruebas utilizando pytest
       run: |
         pytest test/test_main.py -v --tb=short
       
-    - name: Verify API endpoints
+    - name: Verify API endpoints # Verifica los endpoints de la API utilizando pytest
       run: |
         pytest test/test_main.py -v -k "test_predict"
