@@ -3,6 +3,8 @@ from pydantic import BaseModel
 import numpy as np 
 import pandas as pd
 import pickle
+import os
+
 
 app = FastAPI()
 
@@ -15,8 +17,10 @@ class Prediccion(BaseModel):
 
 # Modelo de sobrevivientes del Titanic
 
+# Obtener la ruta absoluta del archivo del modelo
+model_path = os.path.join(os.path.dirname(os.path.abspath(__file__)), 'titanic_model.pkl')
 
-with open('titanic_model.pkl', 'rb') as f:
+with open(model_path, 'rb') as f:
     model = pickle.load(f)
 
 @app.post("/predict")
